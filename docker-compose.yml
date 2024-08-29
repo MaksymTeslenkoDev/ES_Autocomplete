@@ -1,0 +1,41 @@
+version: '3.8.0'
+services:
+  es:
+    container_name: es
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.23
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    env_file:
+      - .env
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    networks:
+      - app-network
+
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:7.17.23
+    ports:
+      - "5601:5601"
+    env_file:
+      - .env
+    environment:
+      - ELASTICSEARCH_URL=http://es:9200
+      - ELASTICSEARCH_HOSTS=http://es:9200
+      - ELASTICSEARCH_USERNAME=${ELASTIC_USERNAME}
+      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
+    networks:
+      - app-network
+  
+volumes:
+  esdata:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge

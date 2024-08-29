@@ -1,0 +1,14 @@
+Cluster Health Check: curl -X GET "localhost:9200/_cat/health?v"
+Check nodes: curl -X GET "localhost:9200/_cat/nodes?v"
+
+Put info into ES: curl -XPUT "localhost:9200/blog/post/1?pretty" -H 'Content-Type: application/json' -d'
+{
+ "title": "ES intro",
+ "content": "<p>This is an intro to ElasticSearch<p>",
+ "tags": [
+   "es",
+   "elastic search",
+   "intro"
+ ],
+ "published_at": "2018-01-12T10:10:00+00:00"
+}'
