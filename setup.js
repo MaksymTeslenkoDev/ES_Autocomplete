@@ -21,20 +21,31 @@ const client = new Client({
           number_of_replicas: 1,
           analysis: {
             tokenizer: {
-              autocomplete: {
+              edge_ngram_tokenizer: {
                 type: 'edge_ngram',
                 min_gram: 1,
                 max_gram: 20,
                 token_chars: ['letter'],
               },
+              ngram_tokenizer: {
+                type: 'ngram',
+                min_gram: 3,
+                max_gram: 3,
+                token_chars: ['letter'],
+              },
             },
             analyzer: {
-              autocomplete: {
-                tokenizer: 'autocomplete',
+              edge_ngram_analyzer: {
+                tokenizer: 'edge_ngram_tokenizer',
                 filter: ['lowercase'],
               },
-              autocomplete_search: {
-                tokenizer: 'lowercase',
+              ngram_analyzer: {
+                tokenizer: 'ngram_tokenizer',
+                filter: ['lowercase'],
+              },
+              standard_analyzer: {
+                tokenizer: 'standard',
+                filter: ['lowercase'],
               },
             },
           },
@@ -43,8 +54,20 @@ const client = new Client({
           properties: {
             word: {
               type: 'text',
-              analyzer: 'autocomplete',
-              search_analyzer: 'autocomplete_search',
+              fields: {
+                edge_ngram: {
+                  type: 'text',
+                  analyzer: 'edge_ngram_analyzer',
+                },
+                ngram: {
+                  type: 'text',
+                  analyzer: 'ngram_analyzer',
+                },
+                standard: {
+                  type: 'text',
+                  analyzer: 'standard_analyzer',
+                },
+              },
             },
           },
         },

@@ -2,6 +2,8 @@
   "dependencies": {
     "@elastic/elasticsearch": "^7.17.14",
     "dotenv": "^16.4.5",
+    "fastify": "^4.28.1",
+    "fastify-plugin": "^4.5.1",
     "unzipper": "^0.12.3"
   }
 }
